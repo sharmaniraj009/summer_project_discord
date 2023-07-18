@@ -166,6 +166,55 @@ async def jargon(ctx: commands.Context,*, prompt : str):
             await ctx.reply(embed=embed,ephemeral=True)
 
 
+@bot.command()
+async def sl(ctx: commands.Context,*,prompt:str):
+    async with aiohttp.ClientSession() as session :
+      headers = {
+    'content-type' : 'application/json',
+    'authorization' : f'Bearer {bearer}'
+    }
+      payload = {
+      
+  "numResults" : 1,
+  "maxTokens" : 114,
+  "temperature" : 0.33,
+  "topKReturn" : 0,
+  "topP" : 1,
+  "countPenalty" : {
+    "scale": 0,
+    "applyToNumbers": False,
+    "applyToPunctuations": False,
+    "applyToStopwords": False,
+    "applyToWhitespaces": False,
+    "applyToEmojis": False
+  },
+  "frequencyPenalty" : {
+      "scale": 0,
+      "applyToNumbers": False,
+      "applyToPunctuations": False,
+      "applyToStopwords": False,
+      "applyToWhitespaces": False,
+      "applyToEmojis": False
+  },
+  "presencePenalty" : {
+      "scale": 0,
+      "applyToNumbers": False,
+      "applyToPunctuations": False,
+      "applyToStopwords": False,
+      "applyToWhitespaces": False,
+      "applyToEmojis": False
+  },
+  "stopSequences" : ["##"]
+}
+      url = 'https://api.ai21.com/studio/v1/j2-light/complete'
+      print(payload)
+      async with session.post(url=url, json=payload, headers=headers) as answer:
+        response = await answer.json()
+            # print(response)
+        embed = discord.Embed(title="bot's response", description=(response['completions'][0]['data']['text']), color=0x11d411)
+        await ctx.reply(embed=embed,ephemeral=True)
+
+
 bot.run(token)
 
 
