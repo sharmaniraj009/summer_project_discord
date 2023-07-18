@@ -25,10 +25,12 @@ async def on_ready():
 @bot.tree.command(name="help")
 async def hello(interaction: discord.Interaction):
     embed = discord.Embed(title="supported command", description=f"hey {interaction.user.mention}! use command !para to get summary of the article",colour=0x5442f5)
-    await interaction.response.send_message(f'''use command !summary to get summary of the article
+    await interaction.response.embed(embed=f'''use command !summary to get summary of the article
 !topic to fetch information on a specific topic
 !jargon to simplify buisiness or law jargon to simplified
 hope this was useful for you. {interaction.user.mention}!''', ephemeral=True)
+
+
 # @bot.tree.command(name="paraphrase")
 # @app_commands.describe(paraphrase = "enter an essay to paraphrase : ")
 # async def paraphrase(interaction: discord.Interaction, paraphrase: str):
@@ -74,10 +76,10 @@ async def topic(ctx: commands.Context,*, prompt : str):
     'authorization' : f'Bearer {bearer}'
     }
         payload = {
-    "prompt" : f'''{prompt}''',
+    "prompt" : f'''topic suggestion on {prompt}''',
     "numResults":1,
-  "maxTokens":100,
-  "temperature":0.99,
+  "maxTokens":64,
+  "temperature":0.85,
   "topKReturn": 0,
   "topP":1,
   "countPenalty": {
@@ -103,7 +105,8 @@ async def topic(ctx: commands.Context,*, prompt : str):
     "applyToStopwords": False,
     "applyToWhitespaces": False,
     "applyToEmojis": False
-  }
+  },
+  "stopSequences":["↵"]
 }  
         url = 'https://api.ai21.com/studio/v1/j2-light/complete'
         print(payload)
