@@ -165,7 +165,7 @@ async def jargon(ctx: commands.Context,*, prompt : str):
             embed = discord.Embed(title="bot's response", description=(response['completions'][0]['data']['text']), color=0x11d411)
             await ctx.reply(embed=embed,ephemeral=True)
 
-
+#sentence labeller
 @bot.command()
 async def sl(ctx: commands.Context,*,prompt:str):
     async with aiohttp.ClientSession() as session :
@@ -174,7 +174,7 @@ async def sl(ctx: commands.Context,*,prompt:str):
     'authorization' : f'Bearer {bearer}'
     }
       payload = {
-      
+  "prompt" : f'''Label the following sentence by sentiment: {prompt}''',
   "numResults" : 1,
   "maxTokens" : 114,
   "temperature" : 0.33,
